@@ -1,0 +1,6 @@
+const fs= require('fs')
+const zlib=require('zlib')
+const gzip=zlib.createGzip()
+const read= fs.createReadStream('text.txt','utf-8')
+const write=fs.createWriteStream('text.txt.gz')
+read.pipe(gzip).pipe(write)
