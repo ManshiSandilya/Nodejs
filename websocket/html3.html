@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input name="text" oninput="handleChange(event)">
+    <div id="char">Character Count :0</div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket=io()
+        function handleChange(e){
+        const item=e.target.value
+        socket.emit('data',item)}
+        socket.on("count",(count)=>{
+            document.getElementById('char').innerText= `Character Count: ${count}`
+        })
+    </script>
+</body>
+</html>

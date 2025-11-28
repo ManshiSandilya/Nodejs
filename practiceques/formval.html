@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form">
+        <label>Name:</label>
+        <input type="text" name="name">
+        <label>Email</label>
+        <input type="email" name="email">
+        <label>Password</label>
+        <input type="password" name="password">
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const output = document.getElementById("output");
+
+            const data = {
+                name: e.target.name.value,
+                email: e.target.email.value,
+                password: e.target.password.value
+            };
+
+            const res = await fetch("/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+
+            // Clear previous output
+            output.innerHTML = "";
+
+            if (res.status === 400) {
+                // Show validation errors
+                result.errors.forEach(err => {
+                    const p = document.createElement("p");
+                    p.textContent = err.msg;
+                    output.appendChild(p);
+                });
+            } else {
+                // Show success + data
+                output.innerHTML =
+                    "Validation: " + result.validation + "<br>" +
+                    "Name: " + result.data.name + "<br>" +
+                    "Email: " + result.data.email + "<br>" +
+                    "Password: " + result.data.password;
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+<!-- without fetch <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/submit" method="POST">
+        <label>Name:</label>
+        <input type="text" name="name">
+
+        <label>Email:</label>
+        <input type="email" name="email">
+
+        <label>Password:</label>
+        <input type="password" name="password">
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html> -->

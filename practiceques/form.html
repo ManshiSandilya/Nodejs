@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Save Read</title>
+</head>
+<body>
+    <form id="form">
+        <label>Name:</label>
+        <input name="name" type="text">
+
+        <label>Age:</label>
+        <input name="age" type="number">
+
+        <button type="submit">Submit</button>
+
+        <button type="button" onclick="handleData()">GET DATA</button>
+
+        <pre id="data"></pre>
+    </form>
+
+    <script>
+        document.getElementById("form").addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const user = {
+                name: document.getElementsByName('name')[0].value,
+                age: document.getElementsByName('age')[0].value
+            };
+
+            await fetch('/save', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            });
+
+            alert("Data saved");
+        });
+
+        async function handleData() {
+            const res = await fetch('/user');
+            const data = await res.json();
+
+            document.getElementById('data').innerText =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
