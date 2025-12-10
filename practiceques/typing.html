@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="input" placeholder="type here" onchange="handlechange()">
+    <button onclick="handleSend()">Send</button>
+    <div id="chat"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    const socket=io()
+    const handlechange=()=>socket.emit("typing")
+
+    const handleSend=()=>{
+    const item=document.getElementById("input")
+    const msg=item.value.trim()
+    socket.emit("msg",msg)
+    input.value=""
+}
+
+    socket.on("data",(data)=>{
+    const item=document.getElementById("chat")
+    const div=document.createElement('div')
+    div.innerText="SERVER SAYS \n"+data
+    item.appendChild(div)
+    })
+    </script>
+</body>
+</html>

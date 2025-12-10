@@ -1,6 +1,5 @@
 const fs=require('fs')
 const express=require('express')
-const e = require('express')
 const app= express()
 app.get('/data',(req,res)=>{
     fs.readFile('student.json','utf-8',(err,data)=>{

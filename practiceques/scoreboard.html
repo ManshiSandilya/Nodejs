@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Scoreboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { font-size: 24px; }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Total Score: <span id="scoreDisplay">Loading...</span></h1>
+    <button id="scoreBtn">(+1 Score)</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const btn = document.getElementById('scoreBtn');
+        btn.addEventListener('click', () => {
+            socket.emit('plusOne');
+        });
+        socket.on('updateScore', (newScore) => {
+            scoreDisplay.innerText = newScore;
+            console.log('Score updated to:', newScore);
+        });
+    </script>
+</body>
+</html>
